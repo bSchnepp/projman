@@ -54,7 +54,7 @@ fn main()
 {
 	let listener = TcpListener::bind("0.0.0.0:8180").unwrap();
 	let acceptor = listener.incoming();
-	dbcore::InitDbCore();
+	dbcore::initdb();
 	println!("Starting server...");
 
 	for incoming in acceptor

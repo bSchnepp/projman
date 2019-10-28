@@ -9,7 +9,7 @@ use std::fs;
 
 
 
-pub fn InitDbCore()
+pub fn initdb()
 {
 	std::fs::create_dir_all(".projman/").unwrap();
 	let conn = Connection::open(".projman/core.db").unwrap();
@@ -19,7 +19,8 @@ pub fn InitDbCore()
 	).unwrap();
 	
 	conn.execute(
-		"CREATE TABLE IF NOT EXISTS projects_issues (IssueID BIGINT PRIMARY KEY, IssueName TEXT NOT NULL, IssueClosed INT2, IssuePriority SMALLINT)", 
+		"CREATE TABLE IF NOT EXISTS projects_issues (IssueID BIGINT PRIMARY KEY, IssueName TEXT NOT NULL, 
+			IsOpen BOOLEAN, IssueFiled DATETIME NON NULL, IssueClosed DATETIME, IssuePriority SMALLINT)", 
 		NO_PARAMS
 	).unwrap();
 	
