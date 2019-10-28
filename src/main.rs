@@ -9,22 +9,31 @@ use std::net::Shutdown;
 use std::net::TcpStream;
 use std::net::TcpListener;
 
+
+mod dbcore;
+
 fn client_recv(mut stream: TcpStream)
 {
 	println!("Got a new client");
 	let mut buf = [0 as u8; 4096];
+	let mut vecbuf: Vec<u8> = Vec::new();
 	while match stream.read(&mut buf)
 	{
 		Ok(sz) =>
 		{
 			println!("Read a buffer of size {}", sz);
+			for c in buf.iter()
+			{
+				vecbuf.push(*c);
+			}
+
 			if sz == 0
 			{
-				for c in buf.iter()
+				for c in vecbuf.iter()
 				{
 					if *c != 0
 					{
-						println!("{}", c);
+						print!("{}", *c as char);
 					}
 				}
 				return ();
@@ -45,6 +54,7 @@ fn main()
 {
 	let listener = TcpListener::bind("0.0.0.0:8180").unwrap();
 	let acceptor = listener.incoming();
+	dbcore::InitDbCore();
 	println!("Starting server...");
 
 	for incoming in acceptor
@@ -53,7 +63,7 @@ fn main()
 		{
 			match incoming
 			{
-				Ok(mut incoming) =>
+				Ok(incoming) =>
 				{
 					client_recv(incoming);
 				}
