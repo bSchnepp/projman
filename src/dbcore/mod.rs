@@ -56,6 +56,23 @@ pub fn initdb()
 	).unwrap();
 	
 	conn.execute(
+		"CREATE TABLE IF NOT EXISTS projects_issue_topic 
+			(ID BIGINT PRIMARY KEY UNIQUE, 
+			Name TEXT NOT NULL UNIQUE);",
+		NO_PARAMS
+	).unwrap();
+	
+	conn.execute(
+		"CREATE TABLE IF NOT EXISTS projects_issue_thread 
+			(PostID BIGINT PRIMARY KEY UNIQUE,
+			TopicID BIGINT,
+			Name TEXT NOT NULL UNIQUE,
+			FOREIGN KEY(TopicID) 
+				REFERENCES projects_issue_topic(ID));",
+		NO_PARAMS
+	).unwrap();
+	
+	conn.execute(
 		"CREATE TABLE IF NOT EXISTS projects_issues 
 			(IssueID BIGINT PRIMARY KEY,
 			ProjectID BIGINT,
@@ -69,13 +86,6 @@ pub fn initdb()
 				REFERENCES projects_users(UserID),
 			FOREIGN KEY(ProjectID) 
 				REFERENCES projects_core(ID));", 
-		NO_PARAMS
-	).unwrap();
-	
-	conn.execute(
-		"CREATE TABLE IF NOT EXISTS projects_issue_thread 
-			(ID BIGINT PRIMARY KEY UNIQUE, 
-			Name TEXT NOT NULL UNIQUE);",
 		NO_PARAMS
 	).unwrap();
 }
