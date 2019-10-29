@@ -9,8 +9,14 @@ use std::net::Shutdown;
 use std::net::TcpStream;
 use std::net::TcpListener;
 
-
 mod dbcore;
+use dbcore::*;
+
+fn parse_cmd()
+{
+	/* TODO */
+}
+
 
 fn client_recv(mut stream: TcpStream)
 {
